@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="as">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#276749">
+<meta name="description" content="Darika Goat Farm offline goat records and vaccination tracker">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Darika Goat Farm</title>
+<style>
+:root{--green:#276749;--green2:#1f5139;--cream:#fff8e7;--line:#dce5df;--bg:#f4f7f4;--text:#1f2937;--muted:#667085;--red:#b42318;--yellow:#fff2cc}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans Bengali","Noto Sans",sans-serif}header{background:var(--green);color:white;padding:18px max(16px,env(safe-area-inset-left));position:sticky;top:0;z-index:5;box-shadow:0 2px 8px #0002}header h1{font-size:1.2rem;margin:0 0 4px}header p{margin:0;font-size:.86rem;opacity:.9}.wrap{max-width:1200px;margin:auto;padding:14px}.tabs{display:flex;gap:8px;overflow:auto;margin:0 0 14px}.tab{border:1px solid var(--line);background:white;color:var(--green);padding:10px 13px;border-radius:999px;white-space:nowrap;font-weight:650}.tab.active{background:var(--green);color:white}.panel{display:none}.panel.active{display:block}.card{background:white;border:1px solid var(--line);border-radius:15px;padding:15px;margin-bottom:14px;box-shadow:0 1px 3px #00000008}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.stat{background:var(--cream);border-radius:12px;padding:13px}.stat b{display:block;font-size:1.45rem;color:var(--green)}.stat span{font-size:.82rem;color:var(--muted)}h2{font-size:1.1rem;margin:0 0 12px}h3{font-size:1rem;margin:0 0 10px}label{display:block;font-size:.88rem;font-weight:650;margin:0 0 5px}input,select,textarea{width:100%;padding:10px;border:1px solid #cbd5d0;border-radius:9px;background:white;font:inherit;color:inherit;min-height:42px}textarea{min-height:74px;resize:vertical}.formgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.field{min-width:0}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}button,.filebtn{border:0;border-radius:9px;background:var(--green);color:white;padding:10px 13px;font:inherit;font-weight:650;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px}.secondary{background:#e8f1eb;color:var(--green)}.danger{background:#b42318}.small{padding:6px 9px;font-size:.82rem}.muted{color:var(--muted);font-size:.88rem}.searchrow{display:flex;gap:8px;margin-bottom:10px}.searchrow input{flex:1}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{border-collapse:collapse;width:100%;min-width:760px;background:white}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);font-size:.88rem;vertical-align:top}th{background:#edf5ef;color:var(--green);position:sticky;top:0}tr:last-child td{border-bottom:0}.badge{display:inline-block;border-radius:999px;padding:3px 8px;background:#e8f1eb;color:var(--green);font-size:.78rem;font-weight:650}.badge.warn{background:var(--yellow);color:#7a4b00}.badge.bad{background:#fee4e2;color:var(--red)}.empty{text-align:center;color:var(--muted);padding:25px}.notice{background:#fff8e7;border:1px solid #f0dfb2;padding:11px;border-radius:10px;font-size:.88rem}.hidden{display:none!important}.footer{text-align:center;color:var(--muted);font-size:.8rem;padding:15px}.female{color:#ad315f}.male{color:#2456a6}.mobilecards{display:none}.itemcard{border:1px solid var(--line);border-radius:11px;padding:12px;margin:8px 0;background:white}.itemcard strong{color:var(--green)}@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.formgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.wrap{padding:10px}.card{padding:12px}.desktop-table{display:none}.mobilecards{display:block}}@media(max-width:430px){.formgrid{grid-template-columns:1fr}.stat b{font-size:1.25rem}header h1{font-size:1.05rem}}
+</style>
+</head>
+<body>
+<header><h1>🐐 Darika Goat Farm</h1><p>ছাগলীৰ তথ্য • ভেকচিন • স্বাস্থ্য ৰেকৰ্ড | Offline Record App</p></header>
+<main class="wrap">
+<div class="notice" id="offlineNotice">এই App-ৰ ডেটা এই ডিভাইচৰ ব্ৰাউজাৰত সংৰক্ষণ হয়। একে ডেটা মোবাইল আৰু কম্পিউটাৰত ৰাখিবলৈ Backup Export কৰি আন ডিভাইচত Import কৰক।</div>
+<div class="tabs" role="tablist">
+<button class="tab active" data-tab="dashboard">ডেশ্বব’ৰ্ড</button>
+<button class="tab" data-tab="goats">ছাগলীৰ তালিকা</button>
+<button class="tab" data-tab="vaccines">ভেকচিন লগ</button>
+<button class="tab" data-tab="health">স্বাস্থ্য / দৈনিক</button>
+<button class="tab" data-tab="backup">Backup / Settings</button>
+</div>
+<section id="dashboard" class="panel active">
+<div class="grid">
+<div class="stat"><b id="statGoats">0</b><span>মুঠ ছাগলী</span></div>
+<div class="stat"><b id="statFemale">0</b><span>Female</span></div>
+<div class="stat"><b id="statMale">0</b><span>Male / Khasi</span></div>
+<div class="stat"><b id="statDue">0</b><span>Due / Overdue</span></div>
+</div>
+<div class="card"><h2>ভেকচিনৰ পৰৱৰ্তী তাৰিখ</h2><div id="dueList" class="muted">এতিয়ালৈকে কোনো due date নাই।</div></div>
+<div class="card"><h2>শেহতীয়া ৰেকৰ্ড</h2><div id="recentList" class="muted">এতিয়ালৈকে ৰেকৰ্ড যোগ কৰা হোৱা নাই।</div></div>
+<div class="card"><h2>দ্ৰুত কাম</h2><div class="actions"><button onclick="showTab('goats')">＋ ছাগলী যোগ কৰক</button><button class="secondary" onclick="showTab('vaccines')">＋ ভেকচিন ৰেকৰ্ড</button><button class="secondary" onclick="showTab('health')">＋ স্বাস্থ্য ৰেকৰ্ড</button></div></div>
+</section>
+<section id="goats" class="panel">
+<div class="card"><h2 id="goatFormTitle">নতুন ছাগলী যোগ কৰক</h2><form id="goatForm">
+<input type="hidden" id="goatEditId">
+<div class="formgrid">
+<div class="field"><label for="gName">ছাগলীৰ নাম / ID *</label><input id="gName" required placeholder="যেনে: Raja"></div>
+<div class="field"><label for="gSex">Sex / Type</label><select id="gSex"><option>Female</option><option>Male</option><option>Khasi Male</option></select></div>
+<div class="field"><label for="gBreed">Breed</label><input id="gBreed" placeholder="যেনে: Assam Hill"></div>
+<div class="field"><label for="gAge">Age</label><input id="gAge" placeholder="যেনে: 1 year"></div>
+<div class="field"><label for="gDob">জন্মৰ তাৰিখ</label><input id="gDob" type="date"></div>
+<div class="field"><label for="gStatus">বৰ্তমানৰ অৱস্থা</label><select id="gStatus"><option>Active</option><option>Sold</option><option>Deceased</option><option>Other</option></select></div>
+<div class="field" style="grid-column:1/-1"><label for="gNotes">টোকা</label><textarea id="gNotes" placeholder="স্বাস্থ্য, কিনা তাৰিখ বা আন তথ্য"></textarea></div>
+</div><div class="actions"><button type="submit">Save Goat</button><button type="button" class="secondary" onclick="resetGoatForm()">Clear</button></div></form></div>
+<div class="card"><h2>ছাগলীৰ তালিকা</h2><div class="searchrow"><input id="goatSearch" placeholder="নাম, breed বা sex বিচাৰক…"><button class="secondary" onclick="renderGoats()">Search</button></div><div id="goatTable"></div></div>
+</section>
+<section id="vaccines" class="panel">
+<div class="card"><h2 id="vFormTitle">নতুন ভেকচিন / Injection ৰেকৰ্ড</h2><form id="vForm"><input type="hidden" id="vEditId">
+<div class="formgrid">
+<div class="field"><label for="vDate">দিয়াৰ তাৰিখ *</label><input id="vDate" type="date" required></div>
+<div class="field"><label for="vGoat">ছাগলী *</label><select id="vGoat" required></select></div>
+<div class="field"><label for="vName">Vaccine / Injection *</label><select id="vName"><option>PPR</option><option>ET</option><option>Goatpox</option><option>FMD</option><option>Deworming</option><option>Other</option></select></div>
+<div class="field"><label for="vDose">Dose</label><input id="vDose" placeholder="ভেটৰ পৰামৰ্শ অনুসৰি"></div>
+<div class="field"><label for="vBatch">Batch / Lot No.</label><input id="vBatch"></div>
+<div class="field"><label for="vDue">পৰৱৰ্তী due date</label><input id="vDue" type="date"></div>
+<div class="field"><label for="vGivenBy">দিয়া ব্যক্তি / Clinic</label><input id="vGivenBy"></div>
+<div class="field" style="grid-column:span 2"><label for="vNotes">Reaction / টোকা</label><input id="vNotes"></div>
+</div><div class="actions"><button type="submit">Save Vaccine Record</button><button type="button" class="secondary" onclick="resetVForm()">Clear</button></div></form></div>
+<div class="card"><h2>ভেকচিনৰ ইতিহাস</h2><div class="searchrow"><input id="vSearch" placeholder="ছাগলীৰ নাম বা ভেকচিন বিচাৰক…"><button class="secondary" onclick="renderVaccines()">Search</button></div><div id="vTable"></div></div>
+</section>
+<section id="health" class="panel">
+<div class="card"><h2 id="hFormTitle">স্বাস্থ্য / দৈনিক ৰেকৰ্ড</h2><form id="hForm"><input type="hidden" id="hEditId">
+<div class="formgrid">
+<div class="field"><label for="hDate">তাৰিখ *</label><input id="hDate" type="date" required></div>
+<div class="field"><label for="hGoat">ছাগলী *</label><select id="hGoat" required></select></div>
+<div class="field"><label for="hType">Record Type</label><select id="hType"><option>Weight</option><option>Illness</option><option>Deworming</option><option>Pregnancy</option><option>Kidding</option><option>Injury</option><option>Treatment</option><option>Vet Visit</option><option>Other</option></select></div>
+<div class="field"><label for="hWeight">ওজন (kg)</label><input id="hWeight" type="number" min="0" step="0.1"></div>
+<div class="field"><label for="hFollow">Follow-up Date</label><input id="hFollow" type="date"></div>
+<div class="field"><label for="hVet">Vet / Contact</label><input id="hVet"></div>
+<div class="field"><label for="hSymptom">লক্ষণ / Observation</label><input id="hSymptom"></div>
+<div class="field"><label for="hTreatment">Treatment / Medicine</label><input id="hTreatment"></div>
+<div class="field"><label for="hOutcome">Outcome / Notes</label><input id="hOutcome"></div>
+</div><div class="actions"><button type="submit">Save Health Record</button><button type="button" class="secondary" onclick="resetHForm()">Clear</button></div></form></div>
+<div class="card"><h2>স্বাস্থ্য ৰেকৰ্ডৰ ইতিহাস</h2><div class="searchrow"><input id="hSearch" placeholder="ছাগলীৰ নাম বা ৰেকৰ্ড বিচাৰক…"><button class="secondary" onclick="renderHealth()">Search</button></div><div id="hTable"></div></div>
+</section>
+<section id="backup" class="panel">
+<div class="card"><h2>Backup / Restore</h2><p>ডেটা আপোনাৰ ডিভাইচৰ ব্ৰাউজাৰত থাকে। মোবাইল আৰু কম্পিউটাৰৰ মাজত ডেটা স্থানান্তৰ কৰিবলৈ JSON Backup export কৰি আন ডিভাইচত import কৰক।</p>
+<div class="actions"><button onclick="exportBackup()">⬇ Export Full Backup</button><label class="filebtn secondary">⬆ Import Backup<input id="importFile" type="file" accept=".json,application/json" style="display:none"></label><button class="secondary" onclick="exportCSV('goats')">Export Goat CSV</button><button class="secondary" onclick="exportCSV('vaccines')">Export Vaccine CSV</button><button class="secondary" onclick="exportCSV('health')">Export Health CSV</button></div>
+<p class="muted">Backup-ত ছাগলীৰ তালিকা, ভেকচিন লগ আৰু স্বাস্থ্য ৰেকৰ্ড একেলগে থাকে। Import কৰিলে বৰ্তমানৰ ডেটাৰ ঠাইত Backup-ৰ ডেটা বহুৱাব; আগতে Export কৰি ৰাখক।</p></div>
+<div class="card"><h2>App-ৰ তথ্য</h2><p id="storageInfo" class="muted"></p><p class="notice">Offline ব্যৱহাৰৰ বাবে প্ৰথমে App-ৰ ফাইলসমূহ খুলি install/host কৰিব লাগিব। PWA install আৰু offline cache সাধাৰণতে HTTPS বা localhost-ত কাম কৰে; কেৱল ZIP-ৰ পৰা খোলা HTML-ত app-ৰ ডেটা চলিব পাৰে, কিন্তু install/offline cache সীমিত হ’ব পাৰে।</p><div class="actions"><button class="danger" onclick="clearAll()">সকলো ডেটা মচি পেলাওক</button></div></div>
+</section>
+<div class="footer">Darika Goat Farm • Offline-first record keeping • Backup নিয়মিত লওক</div>
+</main>
+<script>
+const KEY='darikaGoatFarmV1';
+const seedGoats=[
+{name:'Raja',sex:'Male',breed:'Sirohi',age:'',dob:'',status:'Active',notes:'PPR: Previously Injected — date/details verify কৰক'},
+{name:'Noi',sex:'Female',breed:'Assam Hill',age:'1 year',dob:'',status:'Active',notes:'PPR: Not Injected — verify/update'},
+{name:'Xuti',sex:'Female',breed:'Assam Hill',age:'4 months',dob:'',status:'Active',notes:'PPR: Not Injected — verify/update'},
+{name:'Tiki',sex:'Female',breed:'Assam Hill',age:'',dob:'',status:'Active',notes:'PPR injection recorded as 15-09-2026 — verify'},
+{name:'Miki',sex:'Female',breed:'Assam Hill',age:'',dob:'',status:'Active',notes:'PPR injection recorded as 15-09-2026 — verify'},
+{name:'Bogi',sex:'Female',breed:'Assam Hill',age:'',dob:'',status:'Active',notes:'PPR injection recorded as 15-09-2026 — verify'},
+{name:'Kolai',sex:'Khasi Male',breed:'Assam Hill',age:'',dob:'',status:'Active',notes:'PPR injection recorded as 15-09-2026 — verify'},
+{name:'Bogai',sex:'Khasi Male',breed:'Assam Hill',age:'',dob:'',status:'Active',notes:'PPR injection recorded as 15-09-2026 — verify'},
+{name:'Daangkati',sex:'Female',breed:'Assam Hill',age:'',dob:'',status:'Active',notes:'PPR: Not Injected (for pregnant) — vet advice needed'},
+{name:'Tiki miki maak',sex:'Female',breed:'Assam Hill',age:'',dob:'',status:'Active',notes:'PPR injection recorded as 15-09-2026 — verify'},
+{name:'Tiki miki mahi maak',sex:'Female',breed:'Assam Hill',age:'',dob:'',status:'Active',notes:'PPR injection recorded as 15-09-2026 — verify'},
+{name:'F1 black',sex:'Female',breed:'Sirohi Cross',age:'',dob:'',status:'Active',notes:'PPR injection recorded as 15-09-2026 — verify'},
+{name:'F1 whit',sex:'Female',breed:'Sirohi Cross',age:'',dob:'',status:'Active',notes:'PPR injection recorded as 15-09-2026 — verify'}
+];
+let db=loadDB();
+function loadDB(){try{let x=JSON.parse(localStorage.getItem(KEY));if(x&&Array.isArray(x.goats))return x}catch(e){}return {goats:seedGoats.map((g,i)=>({...g,id:'g'+(i+1),created:new Date().toISOString()})),vaccines:[],health:[]}}
+function saveDB(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
+function uid(){return 'id'+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function today(){return new Date().toISOString().slice(0,10)}
+function fmt(d){if(!d)return '—';let x=new Date(d+'T00:00:00');return isNaN(x)?d:x.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}
+function goatName(id){return db.goats.find(g=>g.id===id)?.name||'Unknown goat'}
+function showTab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));if(id==='vaccines'||id==='health')refreshGoatOptions();window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+function resetGoatForm(){document.getElementById('goatForm').reset();document.getElementById('goatEditId').value='';document.getElementById('goatFormTitle').textContent='নতুন ছাগলী যোগ কৰক'}
+document.getElementById('goatForm').addEventListener('submit',e=>{e.preventDefault();let id=goatEditId.value;let obj={id:id||uid(),name:gName.value.trim(),sex:gSex.value,breed:gBreed.value.trim(),age:gAge.value.trim(),dob:gDob.value,status:gStatus.value,notes:gNotes.value.trim()};if(!obj.name)return;if(id){let i=db.goats.findIndex(x=>x.id===id);if(i>=0)db.goats[i]=obj}else db.goats.push(obj);resetGoatForm();saveDB()});
+function editGoat(id){let g=db.goats.find(x=>x.id===id);if(!g)return;showTab('goats');goatEditId.value=g.id;gName.value=g.name;gSex.value=g.sex;gBreed.value=g.breed;gAge.value=g.age;gDob.value=g.dob;gStatus.value=g.status;gNotes.value=g.notes;goatFormTitle.textContent='ছাগলীৰ তথ্য সম্পাদনা কৰক';document.getElementById('goats').scrollIntoView()}
+function deleteGoat(id){if(!confirm('এই ছাগলীৰ মূল তথ্য মচিবনে? ইয়াৰ লগৰ ভেকচিন/স্বাস্থ্য ৰেকৰ্ড থাকিব পাৰে।'))return;db.goats=db.goats.filter(g=>g.id!==id);saveDB()}
+function refreshGoatOptions(){['vGoat','hGoat'].forEach(id=>{let el=document.getElementById(id),old=el.value;el.innerHTML='<option value="">ছাগলী বাছনি কৰক</option>'+db.goats.filter(g=>g.status!=='Sold'&&g.status!=='Deceased').map(g=>`<option value="${esc(g.id)}">${esc(g.name)} (${esc(g.breed||'Breed N/A')})</option>`).join('');if(db.goats.some(g=>g.id===old))el.value=old})}
+function renderGoats(){let q=goatSearch.value.toLowerCase();let arr=db.goats.filter(g=>[g.name,g.sex,g.breed,g.age,g.status,g.notes].join(' ').toLowerCase().includes(q));let html=arr.length?`<div class="desktop-table tablewrap"><table><thead><tr><th>Name / ID</th><th>Sex / Type</th><th>Breed</th><th>Age</th><th>DOB</th><th>Status</th><th>Notes</th><th>Action</th></tr></thead><tbody>${arr.map(g=>`<tr><td><b>${esc(g.name)}</b></td><td class="${g.sex==='Female'?'female':'male'}">${esc(g.sex)}</td><td>${esc(g.breed||'—')}</td><td>${esc(g.age||'—')}</td><td>${fmt(g.dob)}</td><td>${esc(g.status)}</td><td>${esc(g.notes||'—')}</td><td><button class="small secondary" onclick="editGoat('${g.id}')">Edit</button> <button class="small danger" onclick="deleteGoat('${g.id}')">Delete</button></td></tr>`).join('')}</tbody></table></div><div class="mobilecards">${arr.map(g=>`<div class="itemcard"><strong>${esc(g.name)}</strong> <span class="${g.sex==='Female'?'female':'male'}">${esc(g.sex)}</span><div>Breed: ${esc(g.breed||'—')} · Age: ${esc(g.age||'—')}</div><div>DOB: ${fmt(g.dob)} · ${esc(g.status)}</div><div class="muted">${esc(g.notes||'')}</div><div class="actions"><button class="small secondary" onclick="editGoat('${g.id}')">Edit</button><button class="small danger" onclick="deleteGoat('${g.id}')">Delete</button></div></div>`).join('')}</div>`:'<div class="empty">কোনো ছাগলী পোৱা নগ’ল।</div>';goatTable.innerHTML=html;refreshGoatOptions()}
+goatSearch.addEventListener('input',renderGoats);
+function resetVForm(){vForm.reset();vEditId.value='';vDate.value=today();vFormTitle.textContent='নতুন ভেকচিন / Injection ৰেকৰ্ড'}
+vForm.addEventListener('submit',e=>{e.preventDefault();let id=vEditId.value,obj={id:id||uid(),date:vDate.value,goatId:vGoat.value,name:vName.value,dose:vDose.value.trim(),batch:vBatch.value.trim(),due:vDue.value,givenBy:vGivenBy.value.trim(),notes:vNotes.value.trim()};if(!obj.goatId)return;if(id){let i=db.vaccines.findIndex(x=>x.id===id);if(i>=0)db.vaccines[i]=obj}else db.vaccines.push(obj);resetVForm();saveDB()});
+function editV(id){let x=db.vaccines.find(x=>x.id===id);if(!x)return;showTab('vaccines');refreshGoatOptions();vEditId.value=x.id;vDate.value=x.date;vGoat.value=x.goatId;vName.value=x.name;vDose.value=x.dose;vBatch.value=x.batch;vDue.value=x.due;vGivenBy.value=x.givenBy;vNotes.value=x.notes;vFormTitle.textContent='ভেকচিন ৰেকৰ্ড সম্পাদনা কৰক';vForm.scrollIntoView()}
+function deleteV(id){if(confirm('এই ভেকচিন ৰেকৰ্ড মচিবনে?')){db.vaccines=db.vaccines.filter(x=>x.id!==id);saveDB()}}
+function reminder(x){if(!x.due)return '<span class="badge">Due date নাই</span>';if(x.due<today())return '<span class="badge bad">OVERDUE</span>';let d=(new Date(x.due+'T00:00:00')-new Date(today()+'T00:00:00'))/86400000;if(d<=30)return '<span class="badge warn">৩০ দিনৰ ভিতৰত</span>';return '<span class="badge">Not due</span>'}
+function renderVaccines(){let q=vSearch.value.toLowerCase();let arr=[...db.vaccines].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).filter(x=>[goatName(x.goatId),x.name,x.dose,x.notes,x.batch].join(' ').toLowerCase().includes(q));vTable.innerHTML=arr.length?`<div class="desktop-table tablewrap"><table><thead><tr><th>Date</th><th>Goat</th><th>Vaccine</th><th>Dose</th><th>Next due</th><th>Reminder</th><th>Notes</th><th>Action</th></tr></thead><tbody>${arr.map(x=>`<tr><td>${fmt(x.date)}</td><td>${esc(goatName(x.goatId))}</td><td>${esc(x.name)}</td><td>${esc(x.dose||'—')}</td><td>${fmt(x.due)}</td><td>${reminder(x)}</td><td>${esc(x.notes||'—')}</td><td><button class="small secondary" onclick="editV('${x.id}')">Edit</button> <button class="small danger" onclick="deleteV('${x.id}')">Delete</button></td></tr>`).join('')}</tbody></table></div><div class="mobilecards">${arr.map(x=>`<div class="itemcard"><strong>${esc(goatName(x.goatId))}</strong> · ${esc(x.name)}<div>Date: ${fmt(x.date)} · Next due: ${fmt(x.due)}</div><div>${reminder(x)} <span class="muted">${esc(x.dose||'')}</span></div><div class="muted">${esc(x.notes||'')}</div><div class="actions"><button class="small secondary" onclick="editV('${x.id}')">Edit</button><button class="small danger" onclick="deleteV('${x.id}')">Delete</button></div></div>`).join('')}</div>`:'<div class="empty">এতিয়ালৈকে ভেকচিন ৰেকৰ্ড যোগ কৰা হোৱা নাই।</div>'}
+vSearch.addEventListener('input',renderVaccines);
+function resetHForm(){hForm.reset();hEditId.value='';hDate.value=today();hFormTitle.textContent='স্বাস্থ্য / দৈনিক ৰেকৰ্ড'}
+hForm.addEventListener('submit',e=>{e.preventDefault();let id=hEditId.value,obj={id:id||uid(),date:hDate.value,goatId:hGoat.value,type:hType.value,weight:hWeight.value,symptom:hSymptom.value.trim(),treatment:hTreatment.value.trim(),vet:hVet.value.trim(),follow:hFollow.value,outcome:hOutcome.value.trim()};if(!obj.goatId)return;if(id){let i=db.health.findIndex(x=>x.id===id);if(i>=0)db.health[i]=obj}else db.health.push(obj);resetHForm();saveDB()});
+function editH(id){let x=db.health.find(x=>x.id===id);if(!x)return;showTab('health');refreshGoatOptions();hEditId.value=x.id;hDate.value=x.date;hGoat.value=x.goatId;hType.value=x.type;hWeight.value=x.weight;hSymptom.value=x.symptom;hTreatment.value=x.treatment;hVet.value=x.vet;hFollow.value=x.follow;hOutcome.value=x.outcome;hFormTitle.textContent='স্বাস্থ্য ৰেকৰ্ড সম্পাদনা কৰক';hForm.scrollIntoView()}
+function deleteH(id){if(confirm('এই স্বাস্থ্য ৰেকৰ্ড মচিবনে?')){db.health=db.health.filter(x=>x.id!==id);saveDB()}}
+function renderHealth(){let q=hSearch.value.toLowerCase();let arr=[...db.health].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).filter(x=>[goatName(x.goatId),x.type,x.symptom,x.treatment,x.outcome].join(' ').toLowerCase().includes(q));healthTable.innerHTML=arr.length?`<div class="desktop-table tablewrap"><table><thead><tr><th>Date</th><th>Goat</th><th>Type</th><th>Weight</th><th>Observation</th><th>Treatment</th><th>Follow-up</th><th>Outcome</th><th>Action</th></tr></thead><tbody>${arr.map(x=>`<tr><td>${fmt(x.date)}</td><td>${esc(goatName(x.goatId))}</td><td>${esc(x.type)}</td><td>${esc(x.weight||'—')}</td><td>${esc(x.symptom||'—')}</td><td>${esc(x.treatment||'—')}</td><td>${fmt(x.follow)}</td><td>${esc(x.outcome||'—')}</td><td><button class="small secondary" onclick="editH('${x.id}')">Edit</button> <button class="small danger" onclick="deleteH('${x.id}')">Delete</button></td></tr>`).join('')}</tbody></table></div><div class="mobilecards">${arr.map(x=>`<div class="itemcard"><strong>${esc(goatName(x.goatId))}</strong> · ${esc(x.type)}<div>Date: ${fmt(x.date)} · Weight: ${esc(x.weight||'—')} kg</div><div>Observation: ${esc(x.symptom||'—')}</div><div>Treatment: ${esc(x.treatment||'—')}</div><div class="muted">Follow-up: ${fmt(x.follow)} · ${esc(x.outcome||'')}</div><div class="actions"><button class="small secondary" onclick="editH('${x.id}')">Edit</button><button class="small danger" onclick="deleteH('${x.id}')">Delete</button></div></div>`).join('')}</div>`:'<div class="empty">এতিয়ালৈকে স্বাস্থ্য ৰেকৰ্ড যোগ কৰা হোৱা নাই।</div>'}
+hSearch.addEventListener('input',renderHealth);
+function renderDashboard(){statGoats.textContent=db.goats.filter(g=>g.status==='Active').length;statFemale.textContent=db.goats.filter(g=>g.sex==='Female'&&g.status==='Active').length;statMale.textContent=db.goats.filter(g=>g.sex!=='Female'&&g.status==='Active').length;let pending=db.vaccines.filter(x=>x.due&&x.due<=new Date(Date.now()+30*86400000).toISOString().slice(0,10));statDue.textContent=pending.length;let due=pending.sort((a,b)=>a.due.localeCompare(b.due));dueList.innerHTML=due.length?due.map(x=>`<div class="itemcard"><strong>${esc(goatName(x.goatId))}</strong> · ${esc(x.name)} · ${fmt(x.due)} ${reminder(x)}</div>`).join(''):'এতিয়ালৈকে কোনো due date নাই।';let all=[...db.vaccines.map(x=>({...x,kind:'Vaccine',label:x.name})),...db.health.map(x=>({...x,kind:'Health',label:x.type}))].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,5);recentList.innerHTML=all.length?all.map(x=>`<div class="itemcard"><strong>${esc(goatName(x.goatId))}</strong> · ${esc(x.kind)}: ${esc(x.label)}<div class="muted">${fmt(x.date)}</div></div>`).join(''):'এতিয়ালৈকে ৰেকৰ্ড যোগ কৰা হোৱা নাই।'}
+function renderAll(){renderGoats();renderVaccines();renderHealth();renderDashboard();storageInfo.textContent=`ছাগলী: ${db.goats.length} | ভেকচিন ৰেকৰ্ড: ${db.vaccines.length} | স্বাস্থ্য ৰেকৰ্ড: ${db.health.length} | Last saved: ${new Date().toLocaleString()}`}
+function exportBackup(){let blob=new Blob([JSON.stringify({...db,exportedAt:new Date().toISOString(),app:'Darika Goat Farm Offline App'},null,2)],{type:'application/json'});downloadBlob(blob,'Darika-Goat-Farm-Backup-'+today()+'.json')}
+function downloadBlob(blob,name){let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+importFile.addEventListener('change',async e=>{let f=e.target.files[0];if(!f)return;try{let x=JSON.parse(await f.text());if(!Array.isArray(x.goats)||!Array.isArray(x.vaccines)||!Array.isArray(x.health))throw Error('Invalid');if(!confirm('Import কৰিলে এই ডিভাইচৰ বৰ্তমানৰ ডেটা replace হ’ব। আগতে backup লৈছেনে?'))return;db={goats:x.goats,vaccines:x.vaccines,health:x.health};saveDB();alert('Backup import সফল হৈছে।')}catch(err){alert('এই Backup ফাইলটো পঢ়িব পৰা নগ’ল। সঠিক Darika backup বাছনি কৰক।')}e.target.value=''});
+function csvCell(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}
+function exportCSV(type){let arr=db[type]||[], rows=[];if(type==='goats'){rows=[['Name','Sex/Type','Breed','Age','DOB','Status','Notes'],...arr.map(x=>[x.name,x.sex,x.breed,x.age,x.dob,x.status,x.notes])]}else if(type==='vaccines'){rows=[['Date','Goat','Vaccine','Dose','Batch','Next Due','Given By','Notes'],...arr.map(x=>[x.date,goatName(x.goatId),x.name,x.dose,x.batch,x.due,x.givenBy,x.notes])]}else{rows=[['Date','Goat','Type','Weight kg','Symptoms','Treatment','Vet','Follow-up','Outcome'],...arr.map(x=>[x.date,goatName(x.goatId),x.type,x.weight,x.symptom,x.treatment,x.vet,x.follow,x.outcome])]}downloadBlob(new Blob(['\ufeff'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}),'Darika-'+type+'-'+today()+'.csv')}
+function clearAll(){if(!confirm('সকলো ছাগলী, ভেকচিন আৰু স্বাস্থ্যৰ ডেটা স্থায়ীভাৱে মচি পেলাবনে? আগতে Backup লওক।'))return;if(!confirm('শেষবাৰৰ বাবে নিশ্চিত কৰক: সকলো ডেটা মচি পেলোৱা হ’ব।'))return;localStorage.removeItem(KEY);db={goats:[],vaccines:[],health:[]};saveDB()}
+vDate.value=today();hDate.value=today();refreshGoatOptions();renderAll();
+if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();window.deferredInstall=e;let b=document.createElement('button');b.textContent='Install App';b.onclick=async()=>{window.deferredInstall.prompt();window.deferredInstall=null;b.remove()};document.querySelector('.tabs').after(b)});
+</script>
+</body></html>

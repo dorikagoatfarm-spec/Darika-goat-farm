@@ -1,0 +1,11 @@
+{
+  "name": "Darika Goat Farm",
+  "short_name": "Darika Farm",
+  "description": "Offline goat register, vaccination and health records",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7f4",
+  "theme_color": "#276749",
+  "icons": []
+}
